@@ -3,9 +3,9 @@
 $dbInfo = array("localhost", "DATABASE_NAME", "root", "PASSWORD");
 
 $dirROOT = "routes/";
-$requestMethods = array("GET", "POST", "DELETE");
+$requestMethods = array("GET", "POST", "PUT", "DELETE");
 $dirSeperator = "/";
-$acceptedLanguages = array("en", "no-nb");
+$acceptedLanguages = array("en");
 
 // -----------------------------------------------------------------------------
 /// Allow cross site resource sharing
