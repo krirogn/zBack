@@ -1,10 +1,10 @@
 <?php
 /// Public variables for this scope
-$dbInfo = array("localhost", "Vardafjell", "root", "");
+$dbInfo = array("localhost", "DATABASE_NAME", "root", "PASSWORD");
 
 $dirROOT = "routes/";
 $requestMethods = array("GET", "POST", "DELETE");
-$dirSeperator = "-";
+$dirSeperator = "/";
 
 // -----------------------------------------------------------------------------
 /// Allow cross site resource sharing
@@ -42,6 +42,7 @@ function ExecuteRoute($dir, $folders = array(), $url = "") {
                 $file = substr($file, 0, -4);
 
                 if ($file == $fileName) {
+                    /// Include local objects
                     $db = new DB($dbInfo[0], $dbInfo[1], $dbInfo[2], $dbInfo[3]);
 
                     include($dir.$file.".php");
@@ -68,7 +69,7 @@ function ExecuteRoute($dir, $folders = array(), $url = "") {
 /// Handles all the requests
 foreach ($requestMethods as $r) {
     if ($_SERVER['REQUEST_METHOD'] == $r) {
-        $folders = explode($dirSeperator, $_GET['url']);
+        $folders = explode($dirSeperator, substr($_SERVER['REQUEST_URI'], 1));
 
         if (sizeof($folders) == 1) {
             ExecuteRoute($r);

@@ -6,10 +6,10 @@
         volumes:
           - ./db:/var/lib/mysql
         environment:
-          MYSQL_ROOT_PASSWORD: Vardafjell
-          MYSQL_DATABASE: Vardafjell
+          MYSQL_ROOT_PASSWORD: life
+          MYSQL_DATABASE: ideal
           MYSQL_USER: root
-          MYSQL_PASSWORD: Vardafjell
+          MYSQL_PASSWORD: life
 
       phpmyadmin:
         image: phpmyadmin/phpmyadmin
@@ -18,7 +18,7 @@
         links:
           - db
         ports:
-          - 6969:80
+          - 7000:80
         volumes:
           - /sessions
 
