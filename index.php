@@ -5,6 +5,7 @@ $dbInfo = array("localhost", "DATABASE_NAME", "root", "PASSWORD");
 $dirROOT = "routes/";
 $requestMethods = array("GET", "POST", "DELETE");
 $dirSeperator = "/";
+$acceptedLanguages = array("en", "no-nb");
 
 // -----------------------------------------------------------------------------
 /// Allow cross site resource sharing
@@ -17,11 +18,13 @@ header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
 /// The classes that are required to run this script
 // The class that handles database connections to MySQL.
 require_once('classes/DB.php');
+// The class that handles the global variables.
+require_once('classes/GV.php');
 
 
 /// Executes the file corresponding to the request route
 function ExecuteRoute($dir, $folders = array(), $url = "") {
-    global $dbInfo, $dirROOT;
+    global $dbInfo, $dirROOT, $acceptedLanguages;
     $fileName = "";
 
     $dir = $dirROOT.$dir.'/';
@@ -45,10 +48,32 @@ function ExecuteRoute($dir, $folders = array(), $url = "") {
                     /// Include local objects
                     $db = new DB($dbInfo[0], $dbInfo[1], $dbInfo[2], $dbInfo[3]);
 
+
+                    /// Include objects from composer
+                    require_once 'vendor/autoload.php';
+
+
+                    /// Handle the language
+                    //  Get the language file
+                    $LANG = "en";
+                    if (!empty(getallheaders()['accept-language']) && in_array(getallheaders()['accept-language'], $acceptedLanguages)) {
+                    $LANG = getallheaders()['accept-language'];
+                    }
+
+                    // Parse a po file
+                    $fileHandler = new Sepia\PoParser\SourceHandler\FileSystem('data/lang/strings.'.$LANG.'.po');
+
+                    $poParser = new Sepia\PoParser\Parser($fileHandler);
+                    $catalog  = $poParser->parse();
+
+
+                    /// Add the corresponding file
                     include($dir.$file.".php");
 
+
+                    /// Close dir and application
                     closedir($dh);
-                    die();
+                    exit();
                 }
             }
             closedir($dh);
