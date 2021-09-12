@@ -1,6 +1,7 @@
 <?php
 /// Public variables for this scope
-$dbInfo = array("localhost", "DATABASE_NAME", "root", "PASSWORD");
+//  "db:3306" is also the server name for phpmyadmin
+$dbInfo = array("db:3306", "DATABASE_NAME", "root", "PASSWORD");
 
 $dirROOT = "routes/";
 $requestMethods = array("GET", "POST", "PUT", "DELETE");
